@@ -1,0 +1,68 @@
+
+<div id="sendSMS" data-role="page" data-add-back-btn="true">
+	<script type="text/javascript" charset="utf-8">
+	//alert(window.localStorage.getItem("number"));	
+	//alert(window.localStorage.getItem("name"));	
+	$('#snd-sms').html('Send SMS to '+ window.localStorage.getItem("name"));
+	
+	function sendSMS(){
+	var sendto = window.localStorage.getItem("number");
+	var msgtext = $('#smstext').val();
+	var serviceURL = "http://172.22.1.11/Way2SMS-API-master/sendsms.php?sendto="+sendto+"&text="+encodeURIComponent(msgtext);
+	//alert(serviceURL);
+	$.ajax({
+	  url:serviceURL,
+	  beforeSend:function() {
+			$.mobile.loading("show");
+		},
+		success:function(responSeobject) {
+			if(responSeobject== 0){
+				alert("Invalid information");
+				$.mobile.loading("hide");	
+				$.mobile.changePage("index.html", { transition: "slide"});
+				return false;
+			}
+			else {
+					alert("Message send");  
+					$.mobile.loading("hide");
+					$.mobile.changePage("index.html", { transition: "slide"});
+				}				
+			}
+		
+	  });
+	  
+	  
+}
+
+	//updateCountdown();
+    $('#smstext').keydown(updateCountdown);
+    $('#smstext').keyup(updateCountdown);
+    
+function updateCountdown() {
+        // 140 is the max message length
+        var remaining = 140 - jQuery('#smstext').val().length;
+        if (remaining > 0) {
+            jQuery('#remainingC').text('Left: ' +remaining);
+        } else {
+            jQuery('#remainingC').text('Left: 0');
+        }
+        if ($('#smstext').val().length > 140) {
+            var str = $('#smstext').val();
+            $('#smstext').val(str.substring(0, 140));
+        }
+    }
+  
+
+	
+	</script>
+	<div data-role="header">
+		<h1 id="snd-sms">Send SMS </h1>
+	</div>
+  <div data-role="content">   	
+	<div id="sendSMStext">	
+       <textarea id="smstext" placeholder="Write your message here"></textarea>       
+       <div><span id="remainingC">Left: 140</span></div>
+       <input type="button" onclick="sendSMS()" value="Send SMS">
+   	</div>
+  </div>
+</div>

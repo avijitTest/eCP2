@@ -1,0 +1,66 @@
+
+		<div data-role="page" data-theme="a">
+		    <script type="text/javascript" charset="utf-8">
+		
+	function iterateAlphabet()
+	{
+	   alert('Gridview dividers: '+dividers);
+	   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	   var j=0;
+	   alert(str.length);
+	   
+	   for(var i=0; i<str.length; i++)
+	   {	      
+	      
+		  
+		  
+	      var nextChar = str.charAt(i);
+		  alert(nextChar);
+	      //if(j == 0)	      
+	      $('.ui-grid-b').append('<div class="ui-block-a"><div class="ui-bar ui-bar-e" >'+nextChar+'</div></div>');
+	      
+	      //else if(j == 1)
+	      //$('.ui-grid-b').append('<div class="ui-block-b"><div class="ui-bar ui-bar-e" >'+nextChar+'</div></div>');
+	      
+	      //else if(j == 2){
+			  //$('.ui-grid-b').append('<div class="ui-block-c"><div class="ui-bar ui-bar-e" >'+nextChar+'</div></div>');	      
+			  //j=0;
+		  //}
+	      
+	      //j++;
+	   }
+	}
+	
+	//resizeBlocks();
+	function resizeBlocks() {
+		var width = $('.ui-block-a').width();
+		width = width.toFixed(0);
+		alert('Width: '+width);
+		$(".ui-bar").each(function() {
+			$(this).height(width);
+			$(this).css({'line-height': (width)+'px'});
+		});		
+	}
+    </script>
+    
+    
+		<div data-role="content">	
+        <div class="ui-grid-b">
+       		iterateAlphabet();
+			<!--
+			<div class="ui-block-a"><div class="ui-bar ui-bar-e" >A</div></div>
+			<div class="ui-block-b"><div class="ui-bar ui-bar-e" >B</div></div>
+			<div class="ui-block-c"><div class="ui-bar ui-bar-e" >C</div></div>
+			<div class="ui-block-a"><div class="ui-bar ui-bar-e" >D</div></div>
+			<div class="ui-block-b"><div class="ui-bar ui-bar-e" >E</div></div>
+			<div class="ui-block-c"><div class="ui-bar ui-bar-e" >F</div></div>
+			<div class="ui-block-a"><div class="ui-bar ui-bar-e" >G</div></div>
+			<div class="ui-block-b"><div class="ui-bar ui-bar-e" >H</div></div>
+			<div class="ui-block-c"><div class="ui-bar ui-bar-e" >I</div></div>
+			-->
+			
+		</div><!-- /grid-c -->
+        </div>
+        
+        </div>
+    

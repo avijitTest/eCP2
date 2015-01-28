@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Capture Image</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <!--<script type="text/javascript" charset="utf-8" src="json2.js"></script>-->
+    <link rel="stylesheet"  href="css/jquery.mobile-1.3.2.min.css">
+    <script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.3.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Called when capture operation is finished
+    //
+    var myContacts;
+    var dividers = "";
+    function captureSuccess(mediaFiles) {
+        var i, len;
+        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+            uploadFile(mediaFiles[i]);
+        }       
+    }
+
+    // Called if something bad happens.
+    // 
+    function captureError(error) {
+        var msg = 'An error occurred during capture: ' + error.code;
+        navigator.notification.alert(msg, null, 'Uh oh!');
+    }
+
+    // A button will call this function
+    //
+    function captureImage() {
+        // Launch device camera application, 
+        // allowing user to capture up to 2 images
+        navigator.device.capture.captureImage(captureSuccess, captureError);
+    }
+    
+    function displayAllContacts() {
+		var options = new ContactFindOptions();
+        options.filter=""; 
+        var filter = ["*"];
+        options.multiple=true;
+        navigator.contacts.find(filter, onSuccess, onError, options);
+        //$.mobile.loading("show");
+        $.mobile.showPageLoadingMsg("c", "Loading contacts...");
+	}
+	
+	function findMyLocation() {
+		navigator.geolocation.getCurrentPosition(onSuccessLocation, onErrorLocation);
+	}
+	
+	function onSuccessLocation(position) {		
+        var element = document.getElementById('geolocation');
+        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+                            'Longitude: '          + position.coords.longitude             + '<br />' +
+                            'Altitude: '           + position.coords.altitude              + '<br />' +
+                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Heading: '            + position.coords.heading               + '<br />' +
+                            'Speed: '              + position.coords.speed                 + '<br />' +
+                            'Timestamp: '          + position.timestamp                    + '<br />';
+	}
+		var names = [];
+	  // Upload files to server
+	  function onSuccess(contacts) {
+			//$.mobile.loading("hide");
+			$.mobile.hidePageLoadingMsg();
+			var element = document.getElementById('listAllContacts');
+			var contactsHtml ='';
+			
+			//New section to sort contacts 2014-07-08
+			contacts = contacts.sort(compare);
+			//var dividers = "";
+			
+			
+			
+			// display the address information for all contacts
+			for (var i=0; i<contacts.length; i++) {
+				
+				if (contacts[i].displayName && contacts[i].phoneNumbers) {  // many contacts don't have displayName
+				
+					//New section to sort contacts 2014-07-08
+					var firstLetter = contacts[i].displayName.charAt(0).toUpperCase();
+					//Check if we need to add a divider
+					if(dividers.indexOf(firstLetter) < 0) {
+						dividers += firstLetter;
+						$('#listAllContacts').append('<li data-role="list-divider" onclick="gotoFilter()"><h2>' + firstLetter + '</h2></li>');
+					}
+					
+					
+					
+					//console.log(contacts[i]);				
+					//alert(JSON.stringify(contacts[i]));
+					contactsHtml += contacts[i].displayName +': '+ '<br>';
+					//names.push(contacts[i].displayName);
+					if(contacts[i].photos)
+					var contactPic = contacts[i].photos[0].value;
+					else
+					var contactPic = 'img/user_robot50x50.jpeg';
+					
+					$('#listAllContacts').append('<li><img src="'+contactPic+'" />' +
+					'<h4>' + contacts[i].displayName + '</h4>' +
+					'<p>' + contacts[i].phoneNumbers[0].value + '</p><p><img src="img/sms.png" onclick="gotosendsms(\''+contacts[i].phoneNumbers[0].value+'\',\''+ contacts[i].displayName+'\');"> &nbsp;&nbsp; <a href="tel:'+contacts[i].phoneNumbers[0].value+'"><img src="img/call.png" /></a></p></li>');
+				}
+			}
+			$('#listAllContacts').listview('refresh');
+			console.log(contacts);
+			myContacts = contacts;
+			//console.log(contacts[i].phoneNumbers);
+			//alert(contactsHtml);
+			
+			//element.innerHTML = contactsHtml;
+			
+			//console.log(names);
+			//alert(JSON.stringify(names));
+		}
+
+//message system
+	function gotosendsms(number, name) {
+		window.localStorage.setItem("number", number);
+		window.localStorage.setItem("name", name);		
+		$.mobile.changePage("sendsms.html", { transition: "slide"});
+	}
+	
+	function compare(a,b) {
+		if(a.displayName && a.phoneNumbers)
+		return a.displayName.toLowerCase() > b.displayName.toLowerCase() ? 1 : -1;
+		else
+		return 0;
+	}
+	
+	function gotoFilter() {
+		alert('Grid view loaded!');
+		alert(dividers);
+		$.mobile.changePage("gridview.html", { transition: "pop"});
+	}
+
+
+		// onError: Failed to get the contacts
+		//
+		function onError(contactError) {
+			//$.mobile.loading("hide");			
+			$.mobile.hidePageLoadingMsg();
+			alert('onError!');
+		}
+		function onErrorLocation(error) {
+			alert('code: '    + error.code    + '\n' +
+				  'message: ' + error.message + '\n');
+		}
+		
+		$(document).bind('deviceready', function(){
+		   displayAllContacts();
+		});
+		
+    </script>
+    </head>
+    <body>
+		<div data-role="page" data-theme="a">
+		
+		<div data-role="content">	
+        <!--<button onclick="displayAllContacts();">Display Contacts</button> <br>
+        <li><a href="#"><img src="img/user_robot50x50.jpeg" class="ui-corner-rounded" /><h4>Avijit Sarkar</h4><p>910000</p></a></li>
+        -->
+        <ul id="listAllContacts" data-role="listview" data-filter="true" data-theme="e">
+        
+        </ul>
+        </div>
+        
+        </div>
+    <script type="text/javascript" src="http://debug.build.phonegap.com/target/target-script-min.js#f193bbc6-0756-11e4-854b-12313d16b935"></script></body>
+
+</html>
