@@ -13,6 +13,8 @@
         var x;
 	var frameH, frameW;	
         var gblPageUrl;
+        //CR
+        var gblLatitute=0, gblLongitude=0;
 		
 
         $(document).ready(function(){
@@ -20,6 +22,7 @@
 		frameW = document.documentElement.clientWidth;			
 		$("#guestFrame1").height(frameH);
 		$("#guestFrame1").width(frameW);
+		$("#guestFrame1").src("http://plentyofcurry.com/apps/index.php?lat="+gblLatitute+"&long="+gblLongitude);
 	});
 	
 	$(document).bind('offline', function(){
@@ -65,6 +68,9 @@
 			//x = document.getElementById("demo");
             //x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
             console.log("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+            //CR
+            gblLatitute = position.coords.latitude;
+            gblLongitude = position.coords.longitude;
             //Call Service
             
             $.get("http://plentyofcurry.com/apps/api/latlong.php",
@@ -189,7 +195,7 @@
 		
 		
 			
-			<iframe id="guestFrame1" name="guestFrame1" frameborder="0" src="http://plentyofcurry.com/apps" scrolling="yes"></iframe>
+			<iframe id="guestFrame1" name="guestFrame1" frameborder="0" src="" scrolling="yes"></iframe>
 				
         <!--<button onclick="getPhoto();">From Gallery!!</button>
 		<button onclick="capturePhoto();">Capture Photo</button>
