@@ -71,7 +71,7 @@
             //CR
             gblLatitute = position.coords.latitude;
             gblLongitude = position.coords.longitude;
-            $("#guestFrame1").src("http://plentyofcurry.com/apps/index.php?lat="+gblLatitute+"&long="+gblLongitude);
+            $("#guestFrame1").attr("src","http://plentyofcurry.com/apps/index.php?lat="+gblLatitute+"&long="+gblLongitude);
             //Call Service
             
             $.get("http://plentyofcurry.com/apps/api/latlong.php",
