@@ -22,7 +22,7 @@
 		frameW = document.documentElement.clientWidth;			
 		$("#guestFrame1").height(frameH);
 		$("#guestFrame1").width(frameW);
-		$("#guestFrame1").src("http://plentyofcurry.com/apps/index.php?lat="+gblLatitute+"&long="+gblLongitude);
+		
 	});
 	
 	$(document).bind('offline', function(){
@@ -71,6 +71,7 @@
             //CR
             gblLatitute = position.coords.latitude;
             gblLongitude = position.coords.longitude;
+            $("#guestFrame1").src("http://plentyofcurry.com/apps/index.php?lat="+gblLatitute+"&long="+gblLongitude);
             //Call Service
             
             $.get("http://plentyofcurry.com/apps/api/latlong.php",
