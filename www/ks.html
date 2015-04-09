@@ -157,7 +157,7 @@
             options.chunkedMode = false;
  
             var ft = new FileTransfer();
-            ft.upload(imageURI, "http://10.227.94.93:8888/DelServ/imagereciveCapture.php", win, fail, options);
+            ft.upload(imageURI, "http://plentyofcurry.com/apps/api/imagerecive.php", win, fail, options);
         }
         
         function win(r) {
@@ -189,8 +189,8 @@
             //Call Service
             //alert("pageurl: "+gblPageUrl);
             //$.post("http://plentyofcurry.com/apps/api/imagerecive.php",
-            $.post("http://10.227.94.93:8888/DelServ/imagerecive.php",
-            //$.post("http://plentyofcurry.com/apps/api/imagerecive.php",
+            //$.post("http://10.227.94.93:8888/DelServ/imagerecive.php",
+            $.post("http://plentyofcurry.com/apps/api/imagerecive.php",
             {
               imagestr: imageURI,
               pageurl: gblPageUrl
